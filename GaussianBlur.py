@@ -69,11 +69,17 @@ def gaussian_blur(img, kernel_size):
     return final_image
 
 
+### przykład użycia
+
+# wczytaj obraz
 img = Image.open("test.jpg")
+# zamień na numpy array
 img = np.asarray(img)
+
+# użyj funkcji gaussian_blur
 blur_kernel_size = 150
 img = gaussian_blur(img, kernel_size=blur_kernel_size)
-print(type(img))
-print(img.shape)
+
+# zmień spowrotem tablice na obraz i go pokaż
 pillow_image = Image.fromarray(img)
 pillow_image.show()
