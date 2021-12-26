@@ -3,6 +3,7 @@ from numpy.fft import fft2, ifft2
 from matplotlib import pyplot as plt
 from PIL import Image
 
+
 # univariate normal distribution density
 def dnorm(x, mu, sd):
     return 1 / (np.sqrt(2 * np.pi) * sd) * np.e ** (-np.power((x - mu) / sd, 2) / 2)
@@ -34,10 +35,15 @@ def create_kernel(size):
     kernel = np.divide(kernel, kernel.max())
     return kernel
 
+
 def gaussian_blur(img, kernel_size):
     kernel = create_kernel(kernel_size)
     return fft_convolution(img, kernel)
 
 
-img = Image.open("test.png")
+img = Image.open("test.jpg")
+img.load()
+data = np.asarray(img, dtype="int32")
 
+plt.imread(gaussian_blur(img, 8))
+plt.imshow()
