@@ -5,7 +5,7 @@ from mathTools import dnorm, fft_convolution
 def _create_kernel(kernel_size):
     """
     :param kernel_size: size of the convolution kernel
-    :return: the kernel
+    :return: the gaussian distribution kernel
     """
     kernel_1d = np.linspace(-(kernel_size // 2), kernel_size // 2, kernel_size)
     # The square root of the kernel size seems to work well as the sigma

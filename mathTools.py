@@ -22,6 +22,12 @@ def dnorm(x, mu, sd):
 
 
 def fft_convolution(f1, f2):
+    """
+
+    :param f1: 2d array to be convolved
+    :param f2: convolution kernel
+    :return: convolution result
+    """
     old_dx, old_dy = f1.shape[0], f1.shape[1]
     new_dx, new_dy = old_dx * 2, old_dy * 2
     f1 = padding(f1, new_dx, new_dy)
