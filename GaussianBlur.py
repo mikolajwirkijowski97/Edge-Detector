@@ -71,7 +71,7 @@ def gaussian_blur(img, kernel_size):
 
 img = Image.open("test.jpg")
 img = np.asarray(img)
-blur_kernel_size = 32
+blur_kernel_size = 150
 img = gaussian_blur(img, kernel_size=blur_kernel_size)
 print(type(img))
 print(img.shape)
