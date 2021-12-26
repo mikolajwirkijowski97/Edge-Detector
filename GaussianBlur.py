@@ -1,14 +1,16 @@
 import numpy as np
 from numpy.fft import fft2, ifft2
-from matplotlib import pyplot as plt
-from PIL import Image, ImageOps
-import sys
-from numba import jit, njit
-
-np.set_printoptions(threshold=sys.maxsize)
+from numba import njit
 
 
 def padding(arr, xd, yd):
+    """
+    :param arr: The array to be zero padded
+    :param xd: The desired x dimension
+    :param yd: the desired y dimension
+    :return: A zero padded array with original content in the middle and of size == (xd,yd)
+
+    """
     h = arr.shape[0]
     w = arr.shape[1]
     a = (xd - h) // 2
@@ -18,9 +20,15 @@ def padding(arr, xd, yd):
     return np.pad(arr, pad_width=((a, aa), (b, bb)), mode='constant')
 
 
-# univariate normal distribution density
 @njit
 def dnorm(x, mu, sd):
+    """
+
+    :param x: the variable of the density function
+    :param mu: the mu parameter
+    :param sd: sigma/ standard deviation
+    :return: result of the unm density function
+    """
     return 1 / (np.sqrt(2 * np.pi) * sd) * np.e ** (-np.power((x - mu) / sd, 2) / 2)
 
 
@@ -40,23 +48,32 @@ def fft_convolution(f1, f2):
     return cc
 
 
-# create the kernel for gaussian blur convolutions
-# basically creating a univariate normal distribution and transforming into 2d
-# non-complicated doesnt call for much optimisation
-def create_kernel(size):
-    kernel_1d = np.linspace(-(size // 2), size // 2, size)
-    sigma = np.sqrt(size)  # automatically set variance
+def _create_kernel(kernel_size):
+    """
+    :param kernel_size: size of the convolution kernel
+    :return: the kernel
+    """
+    kernel_1d = np.linspace(-(kernel_size // 2), kernel_size // 2, kernel_size)
+    # The square root of the kernel size seems to work well as the sigma
+    sigma = np.sqrt(kernel_size)
 
-    for i in range(size):
+    for i in range(kernel_size):
         kernel_1d[i] = dnorm(kernel_1d[i], 0, sigma)
-    kernel = np.outer(kernel_1d.T, kernel_1d.transpose())
+
+    # Outer product of own transposition(Auto-correlation matrix)
+    kernel = np.outer(kernel_1d.T, kernel_1d.T)
 
     kernel = np.divide(kernel, kernel.max())
     return kernel
 
 
 def gaussian_blur(img, kernel_size):
-    kernel = create_kernel(kernel_size)
+    """
+    :param img: 2d ndarray containing the image to be blurred
+    :param kernel_size: The size of the convolution kernel
+    :return: 2d ndarray containing the blurred image
+    """
+    kernel = _create_kernel(kernel_size)
 
     img_rgb = np.asarray(np.split(img, 3, axis=-1)).squeeze()
     rgb = [img_rgb[0], img_rgb[1], img_rgb[2]]
@@ -66,20 +83,5 @@ def gaussian_blur(img, kernel_size):
     for i in range(3):
         rgb[i] = np.multiply(rgb[i], np.divide(255.0, rgb[i].max()))
     final_image = np.moveaxis(np.asarray(rgb), 0, -1).astype(np.uint8)
+
     return final_image
-
-
-### przykład użycia
-
-# wczytaj obraz
-img = Image.open("test.jpg")
-# zamień na numpy array
-img = np.asarray(img)
-
-# użyj funkcji gaussian_blur
-blur_kernel_size = 150
-img = gaussian_blur(img, kernel_size=blur_kernel_size)
-
-# zmień spowrotem tablice na obraz i go pokaż
-pillow_image = Image.fromarray(img)
-pillow_image.show()
