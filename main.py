@@ -1,22 +1,44 @@
 from matplotlib import pyplot as plt
-from PIL import Image, ImageOps
+from PIL import ImageTk as PImage
 import numpy as np
-from GaussianBlur import gaussian_blur
-from Sobel import sobel
+from Canny import canny_edge_detection
+from tkinter import *
+from PIL import Image
 from mathTools import arr_to_img
 
-# Load image using PIL
-img = Image.open("test.jpg")
-# Transform from uint8 to float
-img = np.asarray(img) / 255
 
-# Apply Gaussian blur
-softer_image = gaussian_blur(img, 3)
-arr_to_img(softer_image).show()
+def get_current_value():
+    return '{: .2f}'.format(current_value.get())
 
-# Apply Sobel filter to currently single color channell of the image
-edge = sobel(np.asarray(np.split(softer_image, 3, axis=-1)).squeeze()[2])
 
-# Show result
-arr_to_img(edge).show()
+tk_image = None
 
+
+def refresh_image():
+    canvas.delete("all")
+    val = float(get_current_value())
+    print("USED VAL", val)
+    img = canny_edge_detection(np.asarray(current_image), 0.5, val / 2550, 0.1)
+    img = arr_to_img(img)
+    global tk_image
+    tk_image = PImage.PhotoImage(img)
+    canvas.create_image(200, 200, anchor='nw', image=tk_image)
+
+
+window = Tk()
+current_image = Image.open("test.jpg")
+
+window.title("Moja drużyna to fanatyk informatyki")
+window.geometry("1920x1080")
+btn = Button(window, text="Refresh", fg='blue', command=refresh_image)
+
+# slider current value
+current_value = DoubleVar()
+
+slider = Scale(window, from_=0, to=255, orient='horizontal', variable=current_value)
+
+btn.place(x=100, y=600)
+slider.place(x=100, y=500)
+canvas = Canvas(window, width=900, height=900, bg='black')
+canvas.pack()
+window.mainloop()

@@ -1,37 +1,27 @@
 import numpy as np
 from mathTools import fft_convolution, normalize
 from scipy import signal
+from numba import njit, jit
 
 
-def threshold_cutoff(img):
-    """
-
-    Cuts off values below a certain threshold to cleanup useless edges
-    :param img: ndarray output from sobel()
-    :return: cleaned up ndarray
-    """
-    img[img < 0.12] = 0
-    return img
-
-
+@jit(forceobj=True)
 def sobel(img):
     """
 
     Performs the basic sobel algorithm
 
     :param img: single channel 2d img as an ndarray
-    :return: resulting image as an ndarray
+    :return: resulting image as an ndarray and gradient direction for the canny filtering operation
     """
     threshold = 1
     # the mask to be applied over the image
-    sobel_operator = np.array([[1, 0, -1], [2, 0, -2], [1, 0, -1]])
+    sobel_operator = np.array([[1, 0, -1], [2, 0, -2], [1, 0, -1]]).astype(np.float32)
 
-    result_a = signal.convolve2d(img, sobel_operator)
+    result_a = fft_convolution(img, sobel_operator)
 
-    result_b = signal.convolve2d(img, np.flip(sobel_operator.T, axis=0))
+    result_b = fft_convolution(img, np.flip(sobel_operator.T, axis=0))
 
     result = np.sqrt(np.square(result_a) + np.square(result_b))
 
-    return threshold_cutoff(result)
-
-# TODO Implement some nice way to make it work on 3 color channels and then slap Canny on to that sobel
+    gradient_direction = np.rad2deg(np.arctan2(result_a, result_b)) + 180
+    return result, gradient_direction
