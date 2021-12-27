@@ -43,6 +43,20 @@ def threshold(image, low, high, weak):
 
     output[strong_row, strong_col] = strong
     output[weak_row, weak_col] = weak
+
+    #edge tracking by hysteresis
+
+    for i in range(1, len(output)):
+        for j in range(1, len(output[0])):
+            if output[i][j] == weak:
+                for y in range(i-1, i+1):
+                    for x in range(j-1, j+1):
+                        if output[y][x] == strong:
+                            output[i][j] = strong
+                            break
+                if output[i][j] == weak:
+                    output[i][j] = 0
+
     return output
 
 
