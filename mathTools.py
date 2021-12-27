@@ -2,7 +2,7 @@
 from numpy.fft import fft2, ifft2
 import numpy as np
 from PIL import Image
-from numba import njit, jit
+from numba import jit
 
 
 # normalize 0 to 1
