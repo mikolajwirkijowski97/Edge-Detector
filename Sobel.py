@@ -1,10 +1,8 @@
 import numpy as np
 from mathTools import fft_convolution, normalize
 from scipy import signal
-from numba import njit, jit
 
 
-@jit(forceobj=True)
 def sobel(img):
     """
 

@@ -56,11 +56,16 @@ def canny_edge_detection(img, low_mag, low, high):
     grad_mag_b, grad_dir_b = sobel(split[2])
 
     # combine all 3 channells
+
+    # combined sobel gradient magnitude output
     combined_magnitude = np.divide(grad_mag_r + grad_mag_g + grad_mag_b, 2)
+    # combined sobel gradient direction output
     combined_direction = np.divide(grad_dir_r + grad_dir_g + grad_dir_b, 3)
 
+    # Non-max suppresion for the sobel output
     transformed_image = normalize(non_max_suppresion(combined_magnitude, combined_direction))
 
-    nmsed = threshold(transformed_image, low, high, weak=low_mag)
+    # Threshold applied to delete useless edges
+    threshed = threshold(transformed_image, low, high, weak=low_mag)
 
-    return nmsed
+    return threshed

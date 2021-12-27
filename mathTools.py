@@ -1,8 +1,8 @@
 # using fft for 2d convolutions due to speed increase
 from numpy.fft import fft2, ifft2
 import numpy as np
-from numba import njit, jit
 from PIL import Image
+from numba import njit, jit
 
 
 # normalize 0 to 1
@@ -10,7 +10,6 @@ def normalize(arr):
     return (arr - np.min(arr)) / np.ptp(arr)
 
 
-@njit
 def dnorm(x, mu, sd):
     """
     :param x: the variable of the density function
@@ -21,13 +20,14 @@ def dnorm(x, mu, sd):
     return 1 / (np.sqrt(2 * np.pi) * sd) * np.e ** (-np.power((x - mu) / sd, 2) / 2)
 
 
-@jit(forceobj=True)
+@jit(parallel=True)
 def fft_convolution(f1, f2):
     """
     :param f1: 2d array to be convolved
     :param f2: convolution kernel
     :return: convolution result
     """
+
     # extending old dimensions from N to 2N according to convolution theory
     old_dx, old_dy = f1.shape[0], f1.shape[1]
     new_dx, new_dy = old_dx * 2, old_dy * 2
@@ -49,6 +49,7 @@ def fft_convolution(f1, f2):
     return cc
 
 
+@jit(forceobj=True)
 def padding(arr, xd, yd):
     """
     :param arr: The array to be zero padded

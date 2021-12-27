@@ -8,6 +8,14 @@ from PIL import Image
 from mathTools import arr_to_img
 
 
+def test():
+    current_image = np.asarray(Image.open("test.jpg"))
+    canny_edge_detection(current_image, 0.5, 0.8, 0.1)
+    print("did it")
+
+
+
+
 def get_current_value():
     return '{: .2f}'.format(current_value.get())
 
@@ -22,7 +30,7 @@ def refresh_image():
     canvas.delete("all")
     val = float(get_current_value())
     print("USED VAL", val)
-    img = canny_edge_detection(np.asarray(current_image), 0.5, val / 2550, 0.1)
+    img = canny_edge_detection(np.asarray(current_image), 0.5, val / 1500, 0.1)
     img = arr_to_img(img)
     global tk_image
     tk_image = PImage.PhotoImage(img)
