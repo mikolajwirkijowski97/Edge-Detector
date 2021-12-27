@@ -26,13 +26,14 @@ def refresh_image():
     img = arr_to_img(img)
     global tk_image
     tk_image = PImage.PhotoImage(img)
-    canvas.create_image(200, 200, anchor='nw', image=tk_image)
+    canvas.create_image(10, 10, anchor='nw', image=tk_image)
 
 
 def load_image():
     filename = askopenfilename()
     global current_image
     current_image = Image.open(filename)
+    refresh_image()
 
 
 window = Tk()
