@@ -3,6 +3,7 @@ from PIL import ImageTk as PImage
 import numpy as np
 from Canny import canny_edge_detection
 from tkinter import *
+from tkinter.filedialog import askopenfilename
 from PIL import Image
 from mathTools import arr_to_img
 
@@ -12,9 +13,12 @@ def get_current_value():
 
 
 tk_image = None
+current_image = None
 
 
 def refresh_image():
+    if not current_image:
+        load_image()
     canvas.delete("all")
     val = float(get_current_value())
     print("USED VAL", val)
@@ -25,19 +29,28 @@ def refresh_image():
     canvas.create_image(200, 200, anchor='nw', image=tk_image)
 
 
+def load_image():
+    filename = askopenfilename()
+    global current_image
+    current_image = Image.open(filename)
+
+
 window = Tk()
-current_image = Image.open("test.jpg")
 
 window.title("Moja drużyna to fanatyk informatyki")
 window.geometry("1920x1080")
-btn = Button(window, text="Refresh", fg='blue', command=refresh_image)
+window.configure(bg='grey')
+
+btn_refresh = Button(window, text="Refresh", fg='black', command=refresh_image)
+btn_load = Button(window, text="Load", fg='black', command=load_image)
 
 # slider current value
 current_value = DoubleVar()
 
 slider = Scale(window, from_=0, to=255, orient='horizontal', variable=current_value)
 
-btn.place(x=100, y=600)
+btn_load.place(x=200, y=600)
+btn_refresh.place(x=100, y=600)
 slider.place(x=100, y=500)
 canvas = Canvas(window, width=900, height=900, bg='black')
 canvas.pack()
