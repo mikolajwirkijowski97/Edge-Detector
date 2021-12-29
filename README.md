@@ -6,6 +6,7 @@ Narzędzie wykrywające krawędzie za pomocą własnej interpretacji algorytmu C
 - Numpy do podstawowych operacji algebraicznych oraz fast fourier transform.
 - TKinter do szybkiego skonstruowania podstawowego UI 
 - Pillow do obsługi wczytywania zdjęć w wielu formatach
+- Numba do przyspieszenia niektórych operacji
 
 ## Środowisko/Interpreter
 Do uruchomienia projektu potrzebne jest środowisko Conda
