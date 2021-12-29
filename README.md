@@ -9,7 +9,7 @@ Narzędzie wykrywające krawędzie za pomocą własnej interpretacji algorytmu C
 
 ## Użycie programu
 Po zainstalowaniu potrzebnych modułów(np. za pomocą pip install) i uruchomieniu
-skryptu zawartego w main.py otwarte zostaje prost w obsłudze GUI składające się z 
+skryptu zawartego w main.py otwarte zostaje proste w obsłudze GUI składające się z 
 5 głównych elementów
 
 ### Load
