@@ -1,6 +1,6 @@
 # Canny-Edge-Detection---Best-Hackathon
 ## Zadanie kwalifikacyjne na BEST career Hackathon
-Narzędzie wykrywające krawędzie za pomocą algorytmu opartego o algorytm Canny
+Narzędzie wykrywające krawędzie za pomocą własnej interpretacji algorytmu Canny
 
 ## Użyte biblioteki
 - Numpy do podstawowych operacji algebraicznych oraz fast fourier transform.
@@ -22,9 +22,8 @@ Pozwala zapisać wynik wykrywania krawędzi do pliku
 Pozwala ponownie obliczyć krawędzie dla nowych ustawień 
 
 ### Suwak Threshold
-Ustawia minimalny próg akceptowanych krawędzi
+Ustawia minimalny próg wykrywania krawędzi
 
 ### Pole wyświetlanego obrazu
-Wyświetla podgląd wyniku algorytmu Canny
-
+Wyświetla podgląd wyniku algorytmu
 	
