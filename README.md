@@ -15,7 +15,7 @@ Do uruchomienia projektu potrzebne jest środowisko Conda
 Po zainstalowaniu potrzebnych modułów(np. za pomocą pip install) i uruchomieniu
 skryptu zawartego w main.py otwarte zostaje proste w obsłudze GUI składające się z 
 5 głównych elementów
-![przykład użycia programu]("https://i.ibb.co/fNf6TTz/edge.png)
+![przykład użycia programu]("https://i.ibb.co/fNf6TTz/edge.png")
 
 ### Load
 Pozwala załadować dowolne zdjęcie
